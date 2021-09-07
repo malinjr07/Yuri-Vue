@@ -1,0 +1,38 @@
+{
+  "name": "primevue-quickstart-vite",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^3.0.0-4",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
+    "marked": "^3.0.2",
+    "moment": "^2.29.1",
+    "popper.js": "^1.16.1",
+    "primeflex": "^3.0.1",
+    "primeicons": "^4.1.0",
+    "primevue": "^3.2.0-rc.1",
+    "vee-validate": "^4.4.9",
+    "vue": "^3.0.5",
+    "vue-axios": "^3.2.5",
+    "vue-js-modal": "^2.0.1",
+    "vue-router": "^4.0.11",
+    "vuedraggable": "^4.1.0",
+    "vuex": "^4.0.2",
+    "yup": "^0.32.9"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.0.4",
+    "@vue/compiler-sfc": "^3.0.5",
+    "autoprefixer": "^10.3.1",
+    "postcss": "^8.3.6",
+    "vite": "^2.0.0-beta.12"
+  }
+}

@@ -1,0 +1,5 @@
+#by default apache doesn't pass through the HTTP Authorization header to PHP, so we have to do this in the htaccess. For more info, see https://stackoverflow.com/questions/26475885/authorization-header-missing-in-php-post-request
+
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
