@@ -1,5 +1,7 @@
 <template>
-  <div class="paginate"></div>
+  <div class="paginate">
+    
+  </div>
 </template>
 
 <script>

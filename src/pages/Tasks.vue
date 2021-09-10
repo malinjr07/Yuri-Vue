@@ -36,7 +36,7 @@
           <template v-if="!colCalendarCollapsed">
             <iframe
               src="https://calendar.google.com/calendar/embed?height=600&wkst=2&bgcolor=%23ffffff&ctz=Australia%2FBrisbane&src=c2NvdHRAZXhjaXRlbWVkaWEuY29tLmF1&src=c2NvdHRtYXluYXJkQGdtYWlsLmNvbQ&color=%233F51B5&color=%23039BE5&title=Scott's%20Day&showTz=0&mode=AGENDA&showTitle=0&showDate=0&showPrint=0&showTabs=1&showCalendars=1"
-              style="border-width:0:min-width: 300px;width:100%"
+              style="border-width:0;min-width: 300px;width:100%"
               height="600"
               frameborder="0"
               scrolling="no"

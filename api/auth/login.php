@@ -63,7 +63,7 @@ if ($numRows > 0) {
     $audienceClaim = "tempo-vue-frontend";
     $issuedatClaim = time(); // issued at
     $notbeforeClaim = $issuedatClaim + 10; //not before in seconds
-    $expireClaim = $issuedatClaim + 60; // expire time in seconds
+    $expireClaim = $issuedatClaim + 172800; // expire time in seconds
     $token = array(
         "iss" => $issuerClaim,
         "aud" => $audienceClaim,
