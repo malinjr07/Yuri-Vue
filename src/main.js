@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "./plugins/font-awesome";
 
 import setupInterceptors from "./services/setupInterceptors";
 import tempoUtils from "./tempoUtils";
+import TokenService from "./services/token.service";
 
 setupInterceptors(store);
 
@@ -30,6 +31,9 @@ window.tempoApiUsername = "excitemedia";
 window.tempoApiPassword = "af9F4244sfljv4724FDkjsdfj";
 
 const app = createApp(App);
+
+const jwt = TokenService.getUser()?.jwt;
+axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 
 app.config.globalProperties.$_axios = axios;
 app.config.globalProperties.$_lodash = _lodash;

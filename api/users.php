@@ -21,59 +21,57 @@ $requestBody = json_decode(file_get_contents("php://input"), true);
 //check if the resourceId was passed in the URL. We do this so the endpoint URL follows proper REST protocol, however we should also include this ID in the request body.
 $resourceId = false;
 
-if(isset($_GET['ID']) && is_numeric($_GET['ID'])) {
+if (isset($_GET['ID']) && is_numeric($_GET['ID'])) {
     $resourceId = $_GET['ID'];
 }
 
 
 //check the request method. GET = select, POST = insert, PUT = update, DELETE = delete
-switch($requestMethod) {
+switch ($requestMethod) {
     case 'GET': {
-        echo("GET request");
+            echo ("GET request");
 
-        $users = Users::getUsers($requestBody);
+            $users = Users::getUsers($requestBody);
 
-        http_response_code(200);
-        echo(json_encode($users));
-        exit;
-    }
+            http_response_code(200);
+            echo (json_encode($users));
+            exit;
+        }
     case 'POST': {
-        echo("POST request");
-        exit;
-    }
+            echo ("POST request");
+            exit;
+        }
     case 'PUT': {
 
-        
 
-        if($updateResult = Users::updateUser($requestBody)) {
-            
-            http_response_code(200);
-            
-            //TODO: change to json response
-            echo("SUCCESS");
+
+            if ($updateResult = Users::updateUser($requestBody)) {
+
+                http_response_code(200);
+
+                //TODO: change to json response
+                echo ("SUCCESS");
+            } else {
+
+                //TODO: check what the correct response code should be for an error.
+                http_response_code(200);
+
+
+                //TODO: change to json response
+                echo ("ERROR");
+            }
+
+            echo ("PUT request");
+            exit;
         }
-        else {
-
-            //TODO: check what the correct response code should be for an error.
-            http_response_code(200);
-
-
-            //TODO: change to json response
-            echo("ERROR");
-        }
-
-        echo("PUT request");
-        exit;
-    }
     case 'DELETE': {
-        echo("DELETE request");
-        exit;
-    }
+            echo ("DELETE request");
+            exit;
+        }
     default: {
-        echo("Invalid Request Method. Must be GET, POST, PUT, or DELETE.");
-        exit;
-    }
-
+            echo ("Invalid Request Method. Must be GET, POST, PUT, or DELETE.");
+            exit;
+        }
 }
 
 
@@ -93,122 +91,109 @@ switch($requestMethod) {
 
 
 
-class Users {
+class Users
+{
+    public static function getUsers($params)
+    {
 
-    public static function getUsers($params) {
-        
         // instantiate database and task object
         $database = new Database();
         $dbConn = $database->getConnection();
 
-
-        $query = '';        
+        $query = '';
         $query .= "SELECT * FROM users";
 
         //only return active users (unless we specifically specify we want to also return inactive users)
-        if(!(isset($params['activeUsersOnly']) && $params['activeUsersOnly'] == 'N')) {
+        if (!(isset($params['activeUsersOnly']) && $params['activeUsersOnly'] == 'N')) {
             $query .= " WHERE active='Y'";
         }
-        
+
         $query .= " ORDER BY nickname ASC";
-        
+
         // prepare query statement
         $stmt = $dbConn->prepare($query);
-        
+
         // execute query
         $stmt->execute();
 
         $numRows = $stmt->rowCount();
 
-
         $usersArray = array();
 
-        if($numRows > 0) {
-            
+        if ($numRows > 0) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        
-                $userItem = $row;        
+                $userItem = $row;
                 array_push($usersArray, $userItem);
-                
             }
-        
         }
-        
-        return $usersArray;
 
+        return $usersArray;
     }
 
-
-    public static function updateUser($params) {
+    public static function updateUser($params)
+    {
 
         //to this function we pass $params, which is from the $requestBody of the request.
         // this will only contain fields which need to be updated.
 
         //check that at least the ID is present
-        if(!isset($params['ID']) && !is_numeric($params['ID'])) {
-            echo("Can't update: No user id found");
+        if (!isset($params['ID']) && !is_numeric($params['ID'])) {
+            echo ("Can't update: No user id found");
             exit;
         }
 
         $query = "";
 
-        
         $query .= "UPDATE users SET ID=:ID";
-        
-        if(isset($params['first_name'])) {
+
+        if (isset($params['first_name'])) {
             $query .= ", first_name=:first_name";
         }
 
-        if(isset($params['last_name'])) {
+        if (isset($params['last_name'])) {
             $query .= ", last_name=:last_name";
         }
 
-        if(isset($params['nickname'])) {
+        if (isset($params['nickname'])) {
             $query .= ", nickname=:nickname";
         }
 
-        if(isset($params['mobile'])) {
+        if (isset($params['mobile'])) {
             $query .= ", mobile=:mobile";
         }
-                
+
         $query .= "WHERE ID=:ID";
-        
+
         $stmt = $this->conn->prepare($query);
-        
+
         // TODO: sanitise data
-        
-        
+
+
         // bind new values
         $stmt->bindParam(':ID', $this->ID);
 
-        if(isset($params['first_name'])) {
+        if (isset($params['first_name'])) {
             $stmt->bindParam(':first_name', $params['first_name']);
         }
 
-        if(isset($params['last_name'])) {
+        if (isset($params['last_name'])) {
             $stmt->bindParam(':last_name', $params['last_name']);
         }
 
-        if(isset($params['nickname'])) {
+        if (isset($params['nickname'])) {
             $stmt->bindParam(':nickname', $params['nickname']);
         }
 
-        if(isset($params['mobile'])) {
+        if (isset($params['mobile'])) {
             $stmt->bindParam(':mobile', $params['mobile']);
         }
-        
-        
+
+
         // execute the query
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             return true;
         }
-        
-        return false;        
 
+        return false;
     }
-
 }
-
-
-
-?>

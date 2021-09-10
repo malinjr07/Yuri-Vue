@@ -25,35 +25,36 @@ $arr = explode(" ", $authHeader);
 
 $jwt = $arr[1];
 
-if($jwt){
+if ($jwt) {
 
-    try {
+	try {
+		$decoded = JWT::decode($jwt, $secretKey, array('HS256'));
 
-        $decoded = JWT::decode($jwt, $secretKey, array('HS256'));
+		// Access is granted, so we allow the script to proceed.
 
-        // Access is granted, so we allow the script to proceed.
-
-        //echo json_encode(array(
-        //    "message" => "Access granted:",
-        //    "error" => $e->getMessage()
-        //));
+		//echo json_encode(array(
+		//    "message" => "Access granted:",
+		//    "error" => $e->getMessage()
+		//));
 		//exit;
 
-    }
-	catch (Exception $e){
+	} catch (Exception $e) {
+		if ($e === "Expired token") {
+			//
+		}
 
 		http_response_code(401);
 
 		echo json_encode(array(
 			"message" => "Access denied.",
+			"secret" => $secretKey,
+			"jwt" => $jwt,
 			"error" => $e->getMessage()
 		));
 		exit;
 	}
-
-}
-else {
-	echo("No JWT found.");
+} else {
+	echo ("No JWT found.");
 	exit;
 }
 
@@ -80,7 +81,3 @@ else {
 	//echo("YESS auth");
 	//exit;
 //}
-
-
-
-?>

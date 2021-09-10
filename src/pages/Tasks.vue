@@ -284,17 +284,18 @@ export default {
       console.log("today -->", added, obj);
 
       const today = this.$_moment().format("YYYY-MM-DD");
-      const url = window.tempoApiPath + "tasks/update_dates.php";
+      const url = window.tempoApiPath + "tasks.php";
 
       const data = new FormData();
 
       data.append("ID", obj.ID);
-      data.append("dueDate", today);
+      data.append("due_date", today);
 
       this.$_axios
-        .post(url, data)
+        .post(url, { params: data, operation: "updateTask" })
         .then((res) => {
           // this.refreshTasks();
+          this.segmentTasks();
           console.log(res);
         })
         .catch((err) => console.log(err));
@@ -305,17 +306,18 @@ export default {
       console.log("tomorrow -->", added, obj);
 
       const tomorrow = this.$_moment().add(1, "days").format("YYYY-MM-DD");
-      const url = window.tempoApiPath + "tasks/update_dates.php";
+      const url = window.tempoApiPath + "tasks.php";
 
       const data = new FormData();
 
       data.append("ID", obj.ID);
-      data.append("dueDate", tomorrow);
+      data.append("due_date", tomorrow);
 
       this.$_axios
-        .post(url, data)
+        .post(url, { params: data, operation: "updateTask" })
         .then((res) => {
           // this.refreshTasks();
+          this.segmentTasks();
           console.log(res);
         })
         .catch((err) => console.log(err));
@@ -326,17 +328,18 @@ export default {
       console.log("coming -->", added, obj);
 
       const date = this.$_moment().add(1, "years").format("YYYY-MM-DD");
-      const url = window.tempoApiPath + "tasks/update_dates.php";
+      const url = window.tempoApiPath + "tasks.php";
 
       const data = new FormData();
 
       data.append("ID", obj.ID);
-      data.append("dueDate", date);
+      data.append("due_date", date);
 
       this.$_axios
-        .post(url, data)
+        .post(url, { params: data, operation: "updateTask" })
         .then((res) => {
           // this.refreshTasks();
+          this.segmentTasks();
           console.log(res);
         })
         .catch((err) => console.log(err));
@@ -346,16 +349,17 @@ export default {
       const obj = JSON.parse(JSON.stringify(added.element));
       console.log("no due -->", added, obj);
 
-      const url = window.tempoApiPath + "tasks/update_dates.php";
+      const url = window.tempoApiPath + "tasks.php";
       const data = new FormData();
 
       data.append("ID", obj.ID);
-      data.append("dueDate", "0000-00-00");
+      data.append("due_date", "0000-00-00");
 
       this.$_axios
-        .post(url, data)
+        .post(url, { params: data, operation: "updateTask" })
         .then((res) => {
           // this.refreshTasks();
+          this.segmentTasks();
           console.log(res);
         })
         .catch((err) => console.log(err));
@@ -419,6 +423,24 @@ export default {
         window.tempoApiPath +
         "tasks/read.php?assignedUserId=" +
         this.selectedAssignedUserId;
+      // let url = window.tempoApiPath + "tasks.php";
+
+      // const data = new FormData();
+
+      // data.append("operation", "getTasks");
+      // data.append(
+      //   "params",
+      //   JSON.stringify({ assignedUserId: this.selectedAssignedUserId })
+      // );
+      // data.append(
+      //   "auth",
+      //   JSON.stringify({
+      //     username: window.tempoApiUsername,
+      //     password: window.tempoApiPassword,
+      //   })
+      // );
+
+      // for (let d of data) console.log(d);
 
       this.$_axios
         .get(url, {
@@ -428,11 +450,22 @@ export default {
           },
         })
         .then((res) => {
+          console.log(res);
+
           this.tasks = res.data;
           this.isLoading = false;
 
           this.segmentTasks();
         });
+
+      // this.$_axios.post(url, data).then((res) => {
+      //   console.log(res);
+
+      //   this.tasks = res.data;
+      //   this.isLoading = false;
+
+      //   this.segmentTasks();
+      // });
     },
 
     filterUserChanged(selectedUserId) {
