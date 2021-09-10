@@ -1,11 +1,17 @@
 <template>
   <div>
-    <p>Here are your tasks :</p>
+    <div class="row">
+      <div class="col-md-6">
+<p>Here are your tasks :</p>
 
     <TaskFilterBar
       @selectedAssignedUserChanged="filterUserChanged"
     ></TaskFilterBar>
-
+      </div>
+      <div class="col-md-6">
+          <FilterBar/>
+      </div>
+    </div>
     <transition name="tempo-modal-transition">
       <TaskCardModal
         v-if="isModalVisible"
@@ -195,6 +201,7 @@
 <script>
 import draggable from "vuedraggable";
 import { paginate } from "../utils/functions";
+import FilterBar from "../components/searchBar.vue";
 
 // import axios from 'axios'
 // import {tempoUtils} from '../tempoUtils.js'
@@ -212,6 +219,7 @@ export default {
     TaskItem,
     TaskCardModal,
     TaskFilterBar,
+    FilterBar,
     draggable,
   },
 
